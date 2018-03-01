@@ -7,11 +7,10 @@ package sim;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Bus {
     List<Passenger> passengers = new ArrayList<>();
-    int position = 3;
+    int position = 2;
     final int capacity = 20;
     int speed = 30;
     
@@ -31,8 +30,19 @@ public class Bus {
     }
     
     void removepassenger(){
-        for(int i = 0; i<passengers.size(); i++){
-            if(passengers.get(i).destination == position) passengers.remove(i);
+        int i = 0;
+        while(i < passengers.size()){
+            if(passengers.get(i).destination == position) {
+                passengers.remove(i);
+            }else i++;
         }
+    }
+    
+    double timetoload(){
+        double res = 0;
+        for(int i = 0; i<passengers.size(); i++){
+            if(passengers.get(i).destination == position) res+= passengers.get(i).timeload;
+        }
+        return res;
     }
 }
