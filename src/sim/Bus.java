@@ -13,6 +13,9 @@ public class Bus {
     int position = 2;
     final int capacity = 20;
     int speed = 30;
+    int maxpassenger=0;
+    int sumpassenger = 0;
+    
     
     void move(){
         if (position<3){
@@ -21,6 +24,8 @@ public class Bus {
         } else{
             position=1;
         }
+        if(maxpassenger<passengers.size()) maxpassenger = passengers.size();
+        sumpassenger+=passengers.size();
     }
     
     void addpassenger(Passenger p){
