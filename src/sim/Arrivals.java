@@ -18,7 +18,13 @@ import org.javasim.streams.ExponentialStream;
 public class Arrivals extends SimulationProcess
 {
     List<Passenger> passengers = new ArrayList<>();
-    
+    double maxqueuedelay = 0;
+	double sumqueuedelay = 0;
+	int maxqueuesize = 0;
+	double sumqueuesize = 0;
+	int sumperson = 0;
+	
+	
     public Arrivals(double mean)
     {
         InterArrivalTime = new ExponentialStream(mean);
@@ -43,7 +49,17 @@ public class Arrivals extends SimulationProcess
             }
 
             try {
-                passengers.add(new Passenger(InterArrivalTime.getNumber()));
+				//System.out.println(InterArrivalTime.getNumber());
+                passengers.add(new Passenger(InterArrivalTime.getNumber(), SimulationProcess.currentTime()));
+				//System.out.println("Passenger added");
+				sumperson++;
+				sumqueuesize+=passengers.size();
+				if(maxqueuesize<passengers.size()) maxqueuesize=passengers.size();
+				
+				sumqueuedelay += InterArrivalTime.getNumber();
+				if(maxqueuedelay<InterArrivalTime.getNumber()) maxqueuedelay = InterArrivalTime.getNumber();
+				
+				
             } catch (IOException ex) {
                 Logger.getLogger(Arrivals.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ArithmeticException ex) {

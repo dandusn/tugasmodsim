@@ -10,13 +10,17 @@ import java.util.Random;
 public class Passenger {
     int destination;
     double time;
-    int timeload;
-    int timeunload;
+    double timeload;
+    double timeunload;
+	double timeout;
+	double arrivaltime;
     
-    Passenger(double t){
+    Passenger(double t, double u){
         time = t;
         Random r = new Random();
         timeload = r.nextInt(11)+15;
         timeunload = r.nextInt(9)+16;
+		timeout = 0;
+		arrivaltime=u;
     }
 }

@@ -27,23 +27,27 @@ public class Station {
     
     double updateQueue(){
         int i = 0;
-        int s;
+        double s;
         double res=0;
         
-        if(id!=2){
-            Ar.passengers.get(0).destination=2;
-        } else{
-            s = r.nextInt(1000)+1;
-            if(s<=583){
-                Ar.passengers.get(0).destination=0;
-            } else  Ar.passengers.get(0).destination=1;
-        }
-        passengers.add(Ar.passengers.get(0));
+		/*System.out.println(Ar.passengers.size());
+        if(Ar.passengers.size()>0) {
+			if(id!=2){
+				Ar.passengers.get(0).destination=2;
+			} else{
+				s = r.nextInt(1000)+1;
+				if(s<=583){
+					Ar.passengers.get(0).destination=0;
+				} else  Ar.passengers.get(0).destination=1;
+			}
+			passengers.add(Ar.passengers.get(0));
+			System.out.println("added to station");
+
+		}*/
         
-        while(i-1<Ar.passengers.size()){
-            Passenger p = Ar.passengers.get(i);
-            Passenger q = Ar.passengers.get(i+1);
-            if(q.time-p.time>300){
+        while(i<Ar.passengers.size() && Ar.passengers.size()>0){
+            Passenger q = Ar.passengers.get(i);
+            if(q.time>300){
                 break;
             }else{
                 if(id!=2){
@@ -55,13 +59,15 @@ public class Station {
                     } else q.destination=1;
                 }
                 passengers.add(q);
-                res += q.time-p.time;
+				//System.out.println("added to station");
+                res += q.time;
                 i++;
             }
         }
-        
-        for(int j =0;j<=i;j++){
+        int x=0;
+        for(int j =0;x<=i && Ar.passengers.size()>0;){
             Ar.passengers.remove(j);
+			x++;
         }
         
         if(maxqueuesize<passengers.size()) maxqueuesize = passengers.size();
