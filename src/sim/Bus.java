@@ -38,10 +38,10 @@ public class Bus {
         }
     }
     
-    double timetoload(){
+    double timetounload(){
         double res = 0;
         for(int i = 0; i<passengers.size(); i++){
-            if(passengers.get(i).destination == position) res+= passengers.get(i).timeload;
+            if(passengers.get(i).destination == position) res+= passengers.get(i).timeunload;
         }
         return res;
     }
