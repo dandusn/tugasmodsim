@@ -14,15 +14,21 @@ public class Station {
     List<Passenger> passengers = new ArrayList<>();
     int id;
     Random r = new Random();
+    int maxqueuesize = 0;
+    double sumqueuesize = 0;
+    double maxbusinstation = 0;
+    double sumbusinstation = 0;
+    double minbusinstation = 80*3600;
     
     Station(int i, double mean){
         id = i;
         Ar = new Arrivals(mean);
     }
     
-    void updateQueue(){
+    double updateQueue(){
         int i = 0;
         int s;
+        double res=0;
         
         if(id!=2){
             Ar.passengers.get(0).destination=2;
@@ -49,7 +55,7 @@ public class Station {
                     } else q.destination=1;
                 }
                 passengers.add(q);
-
+                res += q.time-p.time;
                 i++;
             }
         }
@@ -58,5 +64,16 @@ public class Station {
             Ar.passengers.remove(j);
         }
         
+        if(maxqueuesize<passengers.size()) maxqueuesize = passengers.size();
+        
+        sumqueuesize+=passengers.size();
+        
+        if(maxbusinstation<res) maxbusinstation = res;
+        
+        if(minbusinstation>res) minbusinstation = res;
+        
+        sumbusinstation+=res;
+
+        return res;
     }
 }
