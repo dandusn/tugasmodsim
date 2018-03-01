@@ -13,6 +13,7 @@ public class Sim {
     
     public static void main(String[] args) {
         double time = 0;
+        double movetime;
         
         Bus b = new Bus();
         Station[] s = new Station[3]; 
@@ -26,7 +27,7 @@ public class Sim {
         while(time<80*60*60){
 			int i = b.position;
 			int k=0;
-			time += b.timetoload();
+			time += b.timetounload();
 			b.removepassenger();
             for (int j = 0; j<s[i].passengers.size(); j++){
 				//System.out.println("Jml passenger: " + b.passengers.size());
@@ -37,10 +38,17 @@ public class Sim {
                     time += s[i].passengers.get(j).timeload;
                 }
             }
-			for(int j=0;j<=k;j++) {
-				s[i].passengers.remove(j);
-			}
+            
+            for(int j=0;j<=k;j++) {
+                    s[i].passengers.remove(j);
+            }
+            
+            if(b.position==2 || b.position==1){
+                movetime = 4.5/(30/3600);
+            } else movetime = 1/(30/3600);
+    
             b.move();
+            time+=movetime;
         }
     }
 }
