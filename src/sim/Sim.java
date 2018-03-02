@@ -5,13 +5,19 @@
  */
 package sim;
 
+import static java.lang.Thread.sleep;
+import org.javasim.RestartException;
+import org.javasim.Scheduler;
+import org.javasim.Simulation;
+import org.javasim.SimulationException;
+
 /**
  *
  * @author ACER
  */
 public class Sim {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SimulationException, RestartException, InterruptedException {
         double time = 0;
         double movetime;
 		double maxloop = 0;
@@ -25,6 +31,8 @@ public class Sim {
 		boolean start = false;
 		int loop=0;
         
+		Simulation.start();
+		
         Bus b = new Bus();
         Station[] s = new Station[3]; 
         s[0] = new Station(1, 3600/14);
@@ -36,6 +44,7 @@ public class Sim {
 		
 		while(s[0].Ar.passengers.size()==0 || s[1].Ar.passengers.size()==0 || s[2].Ar.passengers.size()==0 ) {
 			System.out.println("waiting for passenger...");
+			sleep(1000);
 		}
 		
         while(time<80*3600){
@@ -108,6 +117,8 @@ public class Sim {
 		s[1].Ar.terminate();
 		s[2].Ar.terminate();
 		
+		Simulation.stop();
+		
 		System.out.println("Banyak loop: " + loop);
 		double avgqueuesize0 = 3*s[0].sumqueuesize/loop,
 				avgqueuesize1 = 3*s[1].sumqueuesize/loop,
@@ -122,16 +133,16 @@ public class Sim {
 				avgloop = sumloop/(80*3600),
 				avgallpersontime = sumallpersontime/(s[0].Ar.sumperson+s[1].Ar.sumperson+s[2].Ar.sumperson);
 		
-		avgqueuesize0=s[0].Ar.sumqueuesize/s[0].Ar.sumperson;
-		avgqueuesize1=s[1].Ar.sumqueuesize/s[1].Ar.sumperson;
-		avgqueuesize2=s[2].Ar.sumqueuesize/s[2].Ar.sumperson;
+		avgqueuesize0=s[0].Ar.sumqueuesize/time;
+		avgqueuesize1=s[1].Ar.sumqueuesize/time;
+		avgqueuesize2=s[2].Ar.sumqueuesize/time;
 		
 		System.out.println("Average number in queue 1: " + avgqueuesize0);
 		System.out.println("Average number in queue 2: " + avgqueuesize1);
 		System.out.println("Average number in queue 3: " + avgqueuesize2);
-		System.out.println("Maximum number in queue 1: " + s[0].maxqueuesize);
-		System.out.println("Maximum number in queue 2: " + s[1].maxqueuesize);
-		System.out.println("Maximum number in queue 3: " + s[2].maxqueuesize);
+		System.out.println("Maximum number in queue 1: " + s[0].Ar.maxqueuesize);
+		System.out.println("Maximum number in queue 2: " + s[1].Ar.maxqueuesize);
+		System.out.println("Maximum number in queue 3: " + s[2].Ar.maxqueuesize);
 		System.out.println("Average delay in queue 1: " + avgqueuedelay0);
 		System.out.println("Average delay in queue 2: " + avgqueuedelay1);
 		System.out.println("Average delay in queue 3: " + avgqueuedelay2);
@@ -152,8 +163,8 @@ public class Sim {
 		System.out.println("1 Loop per "+ (double)80*3600/loop +" seconds");
 		System.out.println("Max Time per loop: "+ maxloop);
 		System.out.println("Min Time per loop: "+ minloop);
-		System.out.println("Avg person in system: "+ avgallpersontime);
-		System.out.println("Max person in system: "+ maxallpersontime);
-		System.out.println("Min person in system: "+ minallpersontime);
+		System.out.println("Avg person in system: "+ avgallpersontime/60);
+		System.out.println("Max person in system: "+ maxallpersontime/60);
+		System.out.println("Min person in system: "+ minallpersontime/60);
     }
 }

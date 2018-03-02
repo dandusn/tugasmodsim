@@ -8,6 +8,8 @@ package sim;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.javasim.RestartException;
+import org.javasim.SimulationException;
 
 public class Station {
     Arrivals Ar;
@@ -20,7 +22,7 @@ public class Station {
     double sumbusinstation = 0;
     double minbusinstation = 80*3600;
     
-    Station(int i, double mean){
+    Station(int i, double mean) throws SimulationException, RestartException{
         id = i;
         Ar = new Arrivals(mean);
     }
