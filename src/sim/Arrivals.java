@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.javasim.RestartException;
-import org.javasim.Simulation;
 import org.javasim.SimulationException;
 import org.javasim.SimulationProcess;
 import org.javasim.streams.ExponentialStream;
@@ -24,17 +23,13 @@ public class Arrivals extends SimulationProcess
 	int maxqueuesize = 0;
 	double sumqueuesize = 0;
 	int sumperson = 0;
-	double prevtime = 0, deltaT=0;
 	
 	
-    public Arrivals(double mean) throws SimulationException, RestartException
+    public Arrivals(double mean)
     {
-		super();
         InterArrivalTime = new ExponentialStream(mean);
-		super.activate();
     }
 
-	@Override
     public void run ()
     {
         while (!terminated())
@@ -43,30 +38,35 @@ public class Arrivals extends SimulationProcess
             {
                 hold(InterArrivalTime.getNumber());
             }
-            catch (SimulationException | RestartException | IOException e)
+            catch (SimulationException e)
+            {
+            }
+            catch (RestartException e)
+            {
+            }
+            catch (IOException e)
             {
             }
 
             try {
 				//System.out.println(InterArrivalTime.getNumber());
-                passengers.add(new Passenger(InterArrivalTime.getNumber(), super.time()));
+                passengers.add(new Passenger(InterArrivalTime.getNumber(), SimulationProcess.currentTime()));
 				//System.out.println("Passenger added");
 				sumperson++;
-				deltaT=super.time()-prevtime;
 				sumqueuesize+=passengers.size();
-				prevtime=super.time();
-				System.out.println(super.time());
 				if(maxqueuesize<passengers.size()) maxqueuesize=passengers.size();
 				
 				sumqueuedelay += InterArrivalTime.getNumber();
 				if(maxqueuedelay<InterArrivalTime.getNumber()) maxqueuedelay = InterArrivalTime.getNumber();
 				
 				
-            } catch (IOException | ArithmeticException ex) {
+            } catch (IOException ex) {
+                Logger.getLogger(Arrivals.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ArithmeticException ex) {
                 Logger.getLogger(Arrivals.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    private final ExponentialStream InterArrivalTime;
+    private ExponentialStream InterArrivalTime;
 }
