@@ -18,11 +18,11 @@ public class Bus {
     
     
     void move(){
-        if (position<2){
+        if (position<3){
             position++;
             
         } else{
-            position=0;
+            position=1;
         }
         if(maxpassenger<passengers.size()) maxpassenger = passengers.size();
         sumpassenger+=passengers.size();
