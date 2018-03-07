@@ -16,9 +16,11 @@ public class Station {
     Random r = new Random();
     int maxqueuesize = 0;
     double sumqueuesize = 0;
+	int sumperson=0;
     double maxbusinstation = 0;
     double sumbusinstation = 0;
     double minbusinstation = 80*3600;
+	int decreaseperson = 0;
     
     Station(int i, double mean){
         id = i;
@@ -44,7 +46,6 @@ public class Station {
 			System.out.println("added to station");
 
 		}*/
-        
         while(i<Ar.passengers.size() && Ar.passengers.size()>0){
             Passenger q = Ar.passengers.get(i);
             if(q.time>300){
@@ -64,12 +65,14 @@ public class Station {
                 i++;
             }
         }
+		sumperson += 1;
+		
         int x=0;
         for(int j =0;x<=i && Ar.passengers.size()>0;){
             Ar.passengers.remove(j);
 			x++;
         }
-        
+		
         if(maxqueuesize<passengers.size()) maxqueuesize = passengers.size();
         
         sumqueuesize+=passengers.size();

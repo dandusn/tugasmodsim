@@ -50,14 +50,15 @@ public class Arrivals extends SimulationProcess
 
             try {
 				//System.out.println(InterArrivalTime.getNumber());
-                passengers.add(new Passenger(InterArrivalTime.getNumber(), SimulationProcess.currentTime()));
+				double x = InterArrivalTime.getNumber();
+                passengers.add(new Passenger(x, SimulationProcess.currentTime()));
 				//System.out.println("Passenger added");
 				sumperson++;
 				sumqueuesize+=passengers.size();
 				if(maxqueuesize<passengers.size()) maxqueuesize=passengers.size();
 				
-				sumqueuedelay += InterArrivalTime.getNumber();
-				if(maxqueuedelay<InterArrivalTime.getNumber()) maxqueuedelay = InterArrivalTime.getNumber();
+				sumqueuedelay += x;
+				if(maxqueuedelay<x) maxqueuedelay = x;
 				
 				
             } catch (IOException ex) {

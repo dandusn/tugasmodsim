@@ -25,6 +25,8 @@ public class Sim {
 		boolean start = false;
 		int loop=0;
         
+		int[] decreaseperson = new int[3];
+		
         Bus b = new Bus();
         Station[] s = new Station[3]; 
         s[0] = new Station(1, 3600/14);
@@ -88,6 +90,7 @@ public class Sim {
                 s[i].passengers.remove(j);
 				x++;
             }
+			decreaseperson[i] += 1;
             
             if(b.position==2 || b.position==1){
                 movetime = 4.5*3600/b.speed;
@@ -120,11 +123,20 @@ public class Sim {
 				avgbusinstation1 = 3*s[1].sumbusinstation/loop,
 				avgbusinstation2 = 3*s[2].sumbusinstation/loop,
 				avgloop = sumloop/(80*3600),
-				avgallpersontime = sumallpersontime/(s[0].Ar.sumperson+s[1].Ar.sumperson+s[2].Ar.sumperson);
+				avgallpersontime = sumallpersontime/(s[0].sumperson+s[1].sumperson+s[2].sumperson);
 		
-		avgqueuesize0=s[0].Ar.sumqueuesize/s[0].Ar.sumperson;
-		avgqueuesize1=s[1].Ar.sumqueuesize/s[1].Ar.sumperson;
-		avgqueuesize2=s[2].Ar.sumqueuesize/s[2].Ar.sumperson;
+		avgqueuesize0=s[0].sumqueuesize/(s[0].sumperson+decreaseperson[0]);
+		avgqueuesize1=s[1].sumqueuesize/(s[1].sumperson+decreaseperson[1]);
+		avgqueuesize2=s[2].sumqueuesize/(s[2].sumperson+decreaseperson[2]);
+		
+		System.out.println("banyak queue 1: " + s[0].sumqueuesize);
+		System.out.println("banyak queue 2: " + s[1].sumqueuesize);
+		System.out.println("banyak queue 3: " + s[2].sumqueuesize);
+		
+		System.out.println("frekuensi antrian bertambah/berkurang 1: " + s[0].sumperson+decreaseperson[0]);
+		System.out.println("frekuensi antrian bertambah/berkurang 2: " + s[1].sumperson+decreaseperson[1]);
+		System.out.println("frekuensi antrian bertambah/berkurang 3: " + s[2].sumperson+decreaseperson[2]);
+		
 		
 		System.out.println("Average number in queue 1: " + avgqueuesize0);
 		System.out.println("Average number in queue 2: " + avgqueuesize1);
@@ -152,8 +164,8 @@ public class Sim {
 		System.out.println("1 Loop per "+ (double)80*3600/loop +" seconds");
 		System.out.println("Max Time per loop: "+ maxloop);
 		System.out.println("Min Time per loop: "+ minloop);
-		System.out.println("Avg person in system: "+ avgallpersontime);
-		System.out.println("Max person in system: "+ maxallpersontime);
-		System.out.println("Min person in system: "+ minallpersontime);
+		System.out.println("Avg time person in system: "+ avgallpersontime/60);
+		System.out.println("Max time person in system: "+ maxallpersontime/60);
+		System.out.println("Min time person in system: "+ minallpersontime/60);
     }
 }
